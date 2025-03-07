@@ -1,4 +1,4 @@
-var sn = [42, 41], dz = 43, fx = 1;
+var sn = [42, 41], dz = 43, fx = 1, score = 0;
 var ctx = document.getElementById("can").getContext("2d");
 var gameOver = false;
 
@@ -18,7 +18,7 @@ function gameLoop() {
     sn.unshift(n = sn[0] + fx);
 
     if (sn.indexOf(n, 1) > 0 || n < 0 || n > 399 || fx == 1 && n % 20 == 0 || fx == -1 && n % 20 == 19) {
-        alert("GAME OVER");
+        alert("GAME OVER! Final Score: " + score);
         gameOver = true;
         return;
     }
@@ -26,21 +26,26 @@ function gameLoop() {
     draw(n, "Lime");
 
     if (n === dz) {
+        score++;
+        document.getElementById("score").textContent = score;
         while (sn.indexOf(dz = ~~(Math.random() * 400)) >= 0);
         draw(dz, "red");
     } else {
         draw(sn.pop(), "black");
     }
 
-    setTimeout(gameLoop, 130);
+    setTimeout(gameLoop, 120);
 }
 
 function restartGame() {
     sn = [42, 41];
     dz = 43;
     fx = 1;
+    score = 0;
+    document.getElementById("score").textContent = score;
     gameOver = false;
     ctx.clearRect(0, 0, 400, 400);
+    draw(dz, "red");
     gameLoop();
 }
 
